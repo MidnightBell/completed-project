@@ -1,0 +1,22 @@
+server:
+  port: 8880
+spring:
+  application:
+    name: login-model
+  datasource:
+    url: jdbc:mysql://localhost:3306/completed_project?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: password
+    driverClassName: com.mysql.cj.jdbc.Driver
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+mybatis-plus:
+  configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+#logging:
+#  level:
+#    per.zs.login.db.mapper: debug
