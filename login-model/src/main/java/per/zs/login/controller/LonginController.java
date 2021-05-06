@@ -160,7 +160,7 @@ public class LonginController {
             
             //生成token
             String randomKey = CookieUtil.getRandomKey();
-            String token = CookieUtil.generateToken(userName, randomKey, 168*60*60);
+            String token = CookieUtil.generateToken(userName, randomKey, 7*24*60*60);
             
             /*
              * 保存下此次登录生成的随机数，token验证时需验证随机数是否为本次登录保存的随机数
