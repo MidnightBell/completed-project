@@ -3,6 +3,7 @@ package per.zs.login.db.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -36,5 +37,14 @@ public interface UserMapper extends BaseMapper<User> {
      */
     @Select(value = "select ${ew.sqlSelect} from t_user ${ew.customSqlSegment}")
     IPage<UserInfoDto> selectByParam(IPage<UserInfoDto> page, @Param(Constants.WRAPPER)Wrapper<UserInfoDto> wrapper);
+
+    /**
+     * 修改用户密码
+     * @param userName 用户名
+     * @param password 密码
+     * @return
+     */
+    @Update(value = "update t_user set password = #{password} where user_name = #{userName}")
+    Integer updatePassword(@Param("userName")String userName, @Param("password")String password);
 
 }

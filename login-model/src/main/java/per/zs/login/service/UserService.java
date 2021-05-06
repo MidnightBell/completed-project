@@ -37,4 +37,12 @@ public interface UserService extends IService<User>{
      */
     IPage<UserInfoDto> getUserInfoList(String param,IPage<UserInfoDto> page);
 
+    /**
+     * 修改用户密码
+     * @param userName 用户名
+     * @param password 密码
+     * @return
+     */
+    Integer updatePassword(String userName, String password);
+
 }

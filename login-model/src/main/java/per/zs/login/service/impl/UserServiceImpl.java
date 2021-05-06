@@ -70,4 +70,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         
         return userInfoDtoPage;
     }
+
+    @Override
+    public Integer updatePassword(String userName, String password) {
+        return baseMapper.updatePassword(userName,password);
+    }
 }

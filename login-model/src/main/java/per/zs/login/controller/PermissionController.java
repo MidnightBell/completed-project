@@ -29,7 +29,7 @@ import per.zs.login.service.PermissionService;
 @Validated
 @RestController
 @RequestMapping(value = "permissionManage")
-public class PermissionControler {
+public class PermissionController {
     
     @Autowired
     private PermissionService permissionService;

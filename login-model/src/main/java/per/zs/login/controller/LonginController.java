@@ -3,7 +3,6 @@ package per.zs.login.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -210,29 +209,30 @@ public class LonginController {
     /**
      * 修改密码
      */
-//    @ApiOperation(value = "修改密码")
-//    @PostMapping("updatePassword")
-//    public ResultRes updatePassword(@Validated @RequestBody PasswordUpdDto dto,HttpServletResponse response) {
-//        String oldPassword = dto.getOldPassword();
-//        String newPassword = dto.getNewPassword();
-//        String userName = "";//CurrentUserThreadVo.getCurrentUser();
-//        String password = StringUtils.isEmpty(newPassword)?"":newPassword;
-//        String realPassword = "";
-//        String realoldPassword = "";
-//        try {
-//            realPassword = new String(RSACoder.decryptByPrivateKey(password, RSACoder.privateKey));
-//            realoldPassword = new String(RSACoder.decryptByPrivateKey(oldPassword, RSACoder.privateKey));
-//        }catch(Exception e) {
-//            throw new ParamException("密码解析错误");
-//        }
-//        if(StringUtils.isEmpty(realPassword) || !realPassword.matches(Constant.PASSWORD_REQ)) {
-//            throw new CustomException("密码由字母、数字或下划线组成，必须包含字母大小写和数字，且不少于8位");
-//        }
-//        
-//        User user = userService.getUserByName(userName);
-//        String oPassword = user.getPassword();
-//        String encryptNewPassword = DESUtil.encryptBasedDes(realPassword);
-//        String encryptOldPassword = DESUtil.encryptBasedDes(realoldPassword);
+    @ApiOperation(value = "修改密码-修改后返回新的token")
+    @PostMapping("updatePassword")
+    public ResultRes<String> updatePassword(String oldPassword, String newPassword) {
+        String currentUser = CommonUtil.getCurrentUserName();
+        
+        if(StringUtils.isEmpty(currentUser)) {
+            return new ResultRes<>(HttpCodeEnum.FAIL,null,"获取当前登录用户失败");
+        }
+        String realNewPassword = "";
+        String realOldPassword = "";
+        try {
+            realNewPassword = new String(RSACoder.decryptByPrivateKey(newPassword, RSACoder.privateKey));
+            realOldPassword = new String(RSACoder.decryptByPrivateKey(oldPassword, RSACoder.privateKey));
+        }catch(Exception e) {
+            throw new ParamException("密码解析错误");
+        }
+        if(StringUtils.isEmpty(realNewPassword) || !realNewPassword.matches(Constant.PASSWORD_REQ)) {
+            throw new CustomException("密码由字母、数字或下划线组成，必须包含字母大小写和数字，且不少于8位");
+        }
+        
+        User user = userService.getUserByName(currentUser);
+        String oPassword = user.getPassword();
+//        String encryptNewPassword = DESUtil.encryptBasedDes(realNewPassword);
+//        String encryptOldPassword = DESUtil.encryptBasedDes(realOldPassword);
 //        
 //        if(!StringUtils.equals(encryptOldPassword,oPassword)) {
 //            throw new CustomException("原始密码错误");
@@ -240,39 +240,41 @@ public class LonginController {
 //        if(StringUtils.equals(encryptNewPassword,oPassword)) {
 //            throw new CustomException("新密码不能与原密码相同");
 //        }
-//        Integer successNum = userService.updatePassword(userName,realPassword);
-//        if(successNum > 0) {
-//            //设置Cookie
-//            String randomKey = CookieUtil.getRandomKey();
-//            String encryptUserName = DESUtil.encryptBasedDes(userName+"clagra"+randomKey);
-//            String token = CookieUtil.generateToken(encryptUserName, randomKey, 3600);
-//            LocalCacheUtils.setLocalRandomCache(userName,randomKey);
-//            Cookie cookie = new Cookie("classify_user", "classifyGrade"+token);
-//            cookie.setHttpOnly(true);
-//            cookie.setPath("/");
-//            cookie.setMaxAge(3600);
-//            response.addCookie(cookie);
-//            return new ResultRes<>(HttpCodeEnum.TRUE,null,"修改成功");
-//        }else {
-//            return new ResultRes<>(HttpCodeEnum.FAIL,null,"修改失败");
-//        }
-//    }
+        
+        if(!StringUtils.equals(realOldPassword,oPassword)) {
+            throw new CustomException("原始密码错误");
+        }
+        if(StringUtils.equals(realNewPassword,oPassword)) {
+            throw new CustomException("新密码不能与原密码相同");
+        }
+        Integer successNum = userService.updatePassword(currentUser,realNewPassword);
+        if(successNum > 0) {
+            //生成token
+            String randomKey = CookieUtil.getRandomKey();
+            String token = CookieUtil.generateToken(currentUser, randomKey, 7*24*60*60);
+            
+            /*
+             * 修改密码后保存新的随机数-使原来的token失效（在测试时从header获取token不管用——未验证随机数，会导致之前的token仍然有效，从cookie获取则无此问题）
+             */
+            LocalCacheUtils.setLocalRandomCache(currentUser,randomKey);
+            
+            return new ResultRes<>(HttpCodeEnum.TRUE,token,"修改成功");
+        }else {
+            return new ResultRes<>(HttpCodeEnum.FAIL,null,"修改失败");
+        }
+    }
     
     /**
      * 退出
      */
     @ApiOperation(value = "退出")
     @GetMapping("logout")
-    public ResultBaseRes logout(HttpServletResponse response) {
+    public ResultBaseRes logout() {
         String userName = CommonUtil.getCurrentUserName();
         if(StringUtils.isEmpty(userName)) {
             return ResultBaseRes.builder(HttpCodeEnum.FAIL,"获取当前登录用户失败");
         }
-        LocalCacheUtils.setLocalRandomCache(userName,"");
-        Cookie cookie = new Cookie(Constant.COOKIE_KEY_STR, null);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        LocalCacheUtils.setLocalRandomCache(userName,"");//在测试时从header获取token不管用——未验证随机数，会导致之前的token仍然有效，从cookie获取则无此问题
         return ResultBaseRes.builder(HttpCodeEnum.TRUE,"退出成功");
     }
     
