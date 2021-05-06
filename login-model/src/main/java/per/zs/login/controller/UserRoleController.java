@@ -54,7 +54,7 @@ public class UserRoleController {
      * 成员信息列表查询
      */
     @ApiOperation(value = "成员信息列表查询")
-    @PostMapping("getUserInfoList")
+    @PostMapping("getUserInfoList/{pageNum}/{pageSize}")
     public IPage<UserInfoDto> getUserInfoList(@ApiParam("查询条件") @RequestParam(value = "param",required = false) String param,
             @ApiParam("当前页") @PathVariable("pageNum") Integer pageNum,
             @ApiParam("每页显示条数") @PathVariable("pageSize") Integer pageSize) {

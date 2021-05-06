@@ -66,7 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //            .or().like("concat(u1.user_name)",ecnListDto.getKeyWord()));
 //        }
         queryWrapper.like(!StringUtils.isEmpty(param),"concat(user_name,password,phone,nick_name,sex)",param);
-        IPage<UserInfoDto> userInfoDtoPage = baseMapper.selectByParam(queryWrapper,page);
+        IPage<UserInfoDto> userInfoDtoPage = baseMapper.selectByParam(page, queryWrapper);
         
         return userInfoDtoPage;
     }

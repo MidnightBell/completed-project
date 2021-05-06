@@ -34,7 +34,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param page 分页参数
      * @return
      */
-    @Select(value = "select ${ew.sqlSelect from t_user ${ew.customSqlSegment}}")
-    IPage<UserInfoDto> selectByParam(@Param(Constants.WRAPPER)Wrapper<UserInfoDto> wrapper, IPage<UserInfoDto> page);
+    @Select(value = "select ${ew.sqlSelect} from t_user ${ew.customSqlSegment}")
+    IPage<UserInfoDto> selectByParam(IPage<UserInfoDto> page, @Param(Constants.WRAPPER)Wrapper<UserInfoDto> wrapper);
 
 }
