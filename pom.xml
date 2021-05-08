@@ -10,6 +10,8 @@
 	<modules>
 		<module>login-model</module>
 		<module>eureka-model</module>
+		<module>forum-model</module>
+		<module>common-model</module>
 	</modules>
 
 	<properties>

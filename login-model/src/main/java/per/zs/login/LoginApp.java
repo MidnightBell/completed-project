@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 * @Description  
 */
 @EnableTransactionManagement
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "per.zs")
 public class LoginApp {
     public static void main(String[] args) {
         SpringApplication.run(LoginApp.class, args);

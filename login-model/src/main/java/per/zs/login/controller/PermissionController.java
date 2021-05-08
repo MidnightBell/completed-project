@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import per.zs.common.beans.enums.HttpCodeEnum;
+import per.zs.common.beans.response.ResultBaseRes;
+import per.zs.common.beans.response.ResultRes;
 import per.zs.login.beans.dto.PermissionDto;
-import per.zs.login.beans.enums.HttpCodeEnum;
-import per.zs.login.beans.response.ResultBaseRes;
-import per.zs.login.beans.response.ResultRes;
 import per.zs.login.service.PermissionService;
 
 /** 

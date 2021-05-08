@@ -11,12 +11,12 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import per.zs.common.exception.CustomException;
 import per.zs.login.beans.dto.RoleInfoDto;
 import per.zs.login.beans.req.RoleInfoReq;
 import per.zs.login.db.entity.Role;
 import per.zs.login.db.mapper.RoleMapper;
 import per.zs.login.db.mapper.UserMapper;
-import per.zs.login.exception.CustomException;
 import per.zs.login.service.RoleService;
 
 /** 

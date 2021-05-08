@@ -35,7 +35,7 @@ public interface RoleMapper extends BaseMapper<Role>{
     /**
      * 设置用户角色
      * @param userId 用户id
-     * @param role 角色id列表
+     * @param roleId 角色id
      */
     @Insert(value = "insert into t_user_role (user_id,role_id) values (#{userId},#{roleId})")
     int insertRolseToUserRole(@Param("userId")Integer userId, @Param("roleId")String roleId);

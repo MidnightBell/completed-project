@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import per.zs.common.exception.CustomException;
 import per.zs.login.beans.dto.PermissionDto;
 import per.zs.login.db.entity.Permission;
 import per.zs.login.db.mapper.PermissionMapper;
-import per.zs.login.exception.CustomException;
 import per.zs.login.service.PermissionService;
 
 /** 
@@ -37,29 +37,25 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     @Override
     public List<PermissionDto> getRolePermission(Integer roleId) {
         List<PermissionDto> allPermissionDtoList = baseMapper.selectAllPermission();
-        
+
         List<PermissionDto> permissionDtoList = baseMapper.selectPermissionByRoleId(roleId);
-        if(permissionDtoList == null || permissionDtoList.isEmpty()) {
-            return allPermissionDtoList;
-        }else {
-            
-            Map<Integer, PermissionDto> map = allPermissionDtoList.stream().map(perDto ->{
-                if(permissionDtoList.contains(perDto)) {
-                    perDto.setIsSelected(1);
-                }
-                return perDto;
-            }).collect(Collectors.toMap(dto -> dto.getPerId(), dto -> dto));
-            
-            //将数据加入层级,并仅需要第一级
-            List<PermissionDto> treeList = map.values().stream().peek(data -> {
-                Integer parent = data.getParentId();
-                if (parent != 0) {
-                    map.get(parent).getChildren().add(data);
-                }
-            }).filter(data -> data.getParentId() == 0).collect(Collectors.toList());
-            
-            return treeList;
-        }
+
+        Map<Integer, PermissionDto> map = allPermissionDtoList.stream().map(perDto -> {
+            if (permissionDtoList != null && permissionDtoList.contains(perDto)) {
+                perDto.setIsSelected(1);
+            }
+            return perDto;
+        }).collect(Collectors.toMap(dto -> dto.getPerId(), dto -> dto));
+
+        // 将数据加入层级,并仅需要第一级
+        List<PermissionDto> treeList = map.values().stream().peek(data -> {
+            Integer parent = data.getParentId();
+            if (parent != 0) {
+                map.get(parent).getChildren().add(data);
+            }
+        }).filter(data -> data.getParentId() == 0).collect(Collectors.toList());
+
+        return treeList;
     }
 
     @Transactional(rollbackFor=Exception.class)

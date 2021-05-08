@@ -60,7 +60,7 @@ public interface PermissionMapper extends BaseMapper<Permission>{
     /**
      * 设置角色权限
      * @param roleId 角色id
-     * @param permission 权限id
+     * @param permissionId 权限id
      */
     @Insert(value = "insert into t_role_permission (role_id,permission_id) values (#{roleId},#{permissionId})")
     int insertPermissionsToRolePermission(@Param("roleId")Integer roleId, @Param("permissionId")String permissionId);
