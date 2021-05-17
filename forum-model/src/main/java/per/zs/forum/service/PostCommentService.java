@@ -41,10 +41,17 @@ public interface PostCommentService extends IService<PostComment>{
 
     /**
      * 修改评论
-     * @param req 贫血信息
+     * @param req 评论信息
      * @param currentUser 当前登录用户
      * @return
      */
     Integer updatePostComment(PostCommentReq req, String currentUser);
+
+    /**
+     * 根据评论id获取评论详情
+     * @param commentId 评论id
+     * @return
+     */
+    PostCommentDto getPostCommentInfo(Integer commentId);
 
 }

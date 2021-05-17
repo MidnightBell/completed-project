@@ -81,6 +81,12 @@ public class PostInfoServiceImpl extends ServiceImpl<PostInfoMapper, PostInfo> i
 
     @Override
     public void deletePost(Integer postId,String currentUser) {
+        
+        PostInfoDto postInfoDto = getPostInfo(postId,currentUser);
+        if(postInfoDto == null) {
+            throw new CustomException("主题帖不存在");
+        }
+        
         //1.首先判断当前的用户是否创建者
         String createUserName = baseMapper.selectCreateUserName(postId);
         if(!StringUtils.equals(currentUser,createUserName)) {
@@ -94,6 +100,11 @@ public class PostInfoServiceImpl extends ServiceImpl<PostInfoMapper, PostInfo> i
 
     @Override
     public Integer updatePost(PostInfoReq req, String currentUser) {
+        PostInfoDto postInfoDto = getPostInfo(req.getPostId(),currentUser);
+        if(postInfoDto == null) {
+            throw new CustomException("主题帖不存在");
+        }
+        
         //1.首先判断当前的用户是否创建者
         String createUserName = baseMapper.selectCreateUserName(req.getPostId());
         if(!StringUtils.equals(currentUser,createUserName)) {

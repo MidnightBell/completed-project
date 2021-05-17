@@ -81,6 +81,11 @@ public class PostCommentServiceImpl extends ServiceImpl<PostCommentMapper, PostC
     @Transactional(rollbackFor=Exception.class)
     @Override
     public void deletePostComment(Integer commentId, String currentUser) {
+        PostCommentDto postCommentDto = getPostCommentInfo(commentId);
+        if(postCommentDto == null) {
+            throw new CustomException("评论不存在");
+        }
+        
         Integer postId = getPostIdByCommentId(commentId);
         //1.判断主题帖是否存在
         PostInfoDto postInfoDto = postInfoService.getPostInfo(postId, currentUser);
@@ -90,7 +95,7 @@ public class PostCommentServiceImpl extends ServiceImpl<PostCommentMapper, PostC
         // 2.判断当前的用户是否创建者
         String createUserName = baseMapper.selectCreateUserName(commentId);
         if (!StringUtils.equals(currentUser, createUserName)) {
-            throw new CustomException("当前用户无权删除此帖！");
+            throw new CustomException("当前用户无权删除此评论！");
         }
         //3.删除评论
         baseMapper.setCommentToDel(commentId);
@@ -105,15 +110,20 @@ public class PostCommentServiceImpl extends ServiceImpl<PostCommentMapper, PostC
 
     @Override
     public Integer updatePostComment(PostCommentReq req, String currentUser) {
+        PostCommentDto postCommentDto = getPostCommentInfo(req.getCommentId());
+        if(postCommentDto == null) {
+            throw new CustomException("评论不存在");
+        }
+        
         //1.判断主题帖是否存在
         PostInfoDto postInfoDto = postInfoService.getPostInfo(req.getPostId(), currentUser);
         if(postInfoDto == null) {
             throw new CustomException("当前主题帖不存在");
         }
         //2.首先判断当前的用户是否创建者
-        String createUserName = baseMapper.selectCreateUserName(req.getPostId());
+        String createUserName = baseMapper.selectCreateUserName(req.getCommentId());
         if(!StringUtils.equals(currentUser,createUserName)) {
-            throw new CustomException("当前用户无权修改此帖！");
+            throw new CustomException("当前用户无权修改此评论！");
         }
         PostComment postComment = new PostComment();
         postComment.setId(req.getCommentId());
@@ -122,6 +132,10 @@ public class PostCommentServiceImpl extends ServiceImpl<PostCommentMapper, PostC
         return baseMapper.updateById(postComment);
     }
 
+    @Override
+    public PostCommentDto getPostCommentInfo(Integer commentId) {
+        return baseMapper.selectByPostCommentId(commentId);
+    }
     
     /**
      * 根据评论id获取主题帖id

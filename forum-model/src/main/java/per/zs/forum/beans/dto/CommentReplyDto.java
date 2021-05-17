@@ -23,11 +23,11 @@ public class CommentReplyDto {
     @ApiModelProperty(value = "评论回复详情")
     private String reply;
     
-    @ApiModelProperty(value = "回复对象id")
-    private Integer replyTo;
+    @ApiModelProperty(value = "回复对象")
+    private String replyTo;
     
-    @ApiModelProperty(value = "回复人id")
-    private Integer createUser;
+    @ApiModelProperty(value = "回复人")
+    private String createUser;
     
     @ApiModelProperty(value = "回复时间")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")

@@ -62,4 +62,12 @@ public interface PostCommentMapper extends BaseMapper<PostComment>{
     @Select(value = "select post_id from t_post_comment where id = #{commentId}")
     Integer selectPostIdByCommentId(@Param("commentId")Integer commentId);
 
+    /**
+     * 根据评论id获取评论详情
+     * @param commentId
+     * @return
+     */
+    @Select(value = "select id as commentId,post_id,post_comment,reply_num,create_time,create_user from t_post_comment where id = #{commentId} and is_del = 0")
+    PostCommentDto selectByPostCommentId(@Param("commentId")Integer commentId);
+
 }

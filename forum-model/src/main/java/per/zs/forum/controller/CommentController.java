@@ -41,8 +41,8 @@ public class CommentController {
     private PostCommentService postCommentService;
     
     @ApiOperation(value = "分页获取主题帖评论")
-    @GetMapping("getPostList/{pageNum}/{pageSize}")
-    public IPage<PostCommentDto> getPostList(@RequestParam("postId") Integer postId,@PathVariable("pageNum") Integer pageNum,
+    @GetMapping("getPostCommentList/{pageNum}/{pageSize}")
+    public IPage<PostCommentDto> getPostCommentList(@RequestParam("postId") Integer postId,@PathVariable("pageNum") Integer pageNum,
             @PathVariable("pageSize") Integer pageSize) {
         String currentUser = CommonUtil.getCurrentUserName();
         if(StringUtils.isEmpty(currentUser)) {
@@ -53,8 +53,8 @@ public class CommentController {
     }
     
     @ApiOperation(value = "新增评论")
-    @PostMapping("publishNewPost")
-    public ResultBaseRes publishNewPost(@Validated @RequestBody PostCommentReq req) {
+    @PostMapping("publishNewPostComment")
+    public ResultBaseRes publishNewPostComment(@Validated @RequestBody PostCommentReq req) {
         String currentUser = CommonUtil.getCurrentUserName();
         if(StringUtils.isEmpty(currentUser)) {
             return ResultBaseRes.builder(HttpCodeEnum.FAIL,"获取当前登录用户失败");

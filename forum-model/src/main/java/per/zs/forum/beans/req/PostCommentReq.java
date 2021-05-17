@@ -9,7 +9,7 @@ import lombok.Data;
 /** 
 * Create time 2021年5月8日 上午10:05:06 
 * @author sheng.zhong 
-* @Description  
+* @Description  新增及修改评论请求体
 */
 @Data
 public class PostCommentReq {
