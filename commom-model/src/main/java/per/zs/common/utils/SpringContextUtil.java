@@ -6,8 +6,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * @author juwu.zhang
- * @date 2019/9/5.
+* Create time 2021年5月18日 上午10:30:25 
+* @author sheng.zhong 
+* @Description
  */
 @Component
 public class SpringContextUtil implements ApplicationContextAware {

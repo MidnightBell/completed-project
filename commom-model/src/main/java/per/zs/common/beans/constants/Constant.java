@@ -9,7 +9,7 @@ public class Constant {
     
     public static final String PASSWORD_REQ = "^(?![a-z0-9_]+$)(?![A-Za-z_]+$)(?![A-Z0-9_]+$)[a-zA-Z0-9_]{8,}$";
 
-    public static final String IGNORE_URL = "/auth/login,/auth/loginAuth,/auth/encryptPassword,/auth/verifyCode,/auth/register";
+    public static final String IGNORE_URL = "/auth/login/login,/auth/login/loginAuth,/auth/login/encryptPassword,/auth/login/verifyCode,/auth/login/register";
     
     public static final String SWAGGER_IGNORE = "/swagger-resources,/webjars,/v2,/swagger-ui.html";
     

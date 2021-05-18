@@ -37,7 +37,8 @@ public class SwaggerConfig {
 //		pars.add(ticketPar.build());
 		return new Docket(DocumentationType.SWAGGER_2)
 		        //分组名,不指定默认为default
-		        .groupName("登录模块")
+//		        .groupName("登录模块")
+		        .pathMapping("/auth")
 		        .apiInfo(getApiInfo()).select()
 				.apis(RequestHandlerSelectors.basePackage("per.zs.login.controller")).paths(PathSelectors.any())
 				.build()

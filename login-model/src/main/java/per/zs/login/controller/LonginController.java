@@ -28,6 +28,7 @@ import per.zs.common.exception.ParamException;
 import per.zs.common.utils.CommonUtil;
 import per.zs.common.utils.CookieUtil;
 import per.zs.common.utils.LocalCacheUtils;
+import per.zs.common.utils.RedisCacheUtil;
 import per.zs.login.beans.dto.UserInfoDto;
 import per.zs.login.beans.dto.VerifyCode;
 import per.zs.login.beans.req.LoginReq;
@@ -46,7 +47,7 @@ import per.zs.login.utils.RSACoder;
 @Api(tags = "登录相关接口")
 @Validated
 @RestController
-@RequestMapping(value = "auth")
+@RequestMapping(value = "login")
 public class LonginController {
     
     @Autowired
@@ -164,7 +165,8 @@ public class LonginController {
             /*
              * 保存下此次登录生成的随机数，token验证时需验证随机数是否为本次登录保存的随机数
              */
-            LocalCacheUtils.setLocalRandomCache(userName,randomKey);
+//            LocalCacheUtils.setLocalRandomCache(userName,randomKey);
+            RedisCacheUtil.set(userName,randomKey);
             
             return new ResultRes<>(HttpCodeEnum.TRUE,token,"登陆成功");
         } else {
@@ -256,7 +258,8 @@ public class LonginController {
             /*
              * 修改密码后保存新的随机数-使原来的token失效（在测试时从header获取token不管用——未验证随机数，会导致之前的token仍然有效，从cookie获取则无此问题）
              */
-            LocalCacheUtils.setLocalRandomCache(currentUser,randomKey);
+//            LocalCacheUtils.setLocalRandomCache(currentUser,randomKey);
+            RedisCacheUtil.set(currentUser,randomKey);
             
             return new ResultRes<>(HttpCodeEnum.TRUE,token,"修改成功");
         }else {
@@ -274,7 +277,9 @@ public class LonginController {
         if(StringUtils.isEmpty(userName)) {
             return ResultBaseRes.builder(HttpCodeEnum.FAIL,"获取当前登录用户失败");
         }
-        LocalCacheUtils.setLocalRandomCache(userName,"");//在测试时从header获取token不管用——未验证随机数，会导致之前的token仍然有效，从cookie获取则无此问题
+//        LocalCacheUtils.setLocalRandomCache(userName,"");//在测试时从header获取token不管用——未验证随机数，会导致之前的token仍然有效，从cookie获取则无此问题
+        RedisCacheUtil.set(userName,"");
+        
         return ResultBaseRes.builder(HttpCodeEnum.TRUE,"退出成功");
     }
     

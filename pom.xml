@@ -12,6 +12,7 @@
 		<module>eureka-model</module>
 		<module>forum-model</module>
 		<module>common-model</module>
+		<module>getAway-model</module>
 	</modules>
 
 	<properties>

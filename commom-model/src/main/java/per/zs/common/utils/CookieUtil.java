@@ -3,10 +3,15 @@ package per.zs.common.utils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpCookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.MultiValueMap;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -107,6 +112,29 @@ public class CookieUtil {
             }
         }
         return cookieMap;
+    }
+    
+    
+    /**
+     * 获取请求中的cookie值
+     */
+    public static String getCookieValueByName(ServerHttpRequest request, String name) {
+        MultiValueMap<String,HttpCookie> cookieMap = readCookieMap(request);
+        if (cookieMap.containsKey(name)) {
+            HttpCookie httpCookie = cookieMap.getFirst(name);
+            String cookieValue = Optional.ofNullable(httpCookie).map(HttpCookie::getValue).orElse("");
+            return cookieValue;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * 获取所有cookie
+     */
+    public static MultiValueMap<String,HttpCookie> readCookieMap(ServerHttpRequest request) {
+        MultiValueMap<String,HttpCookie> cookies = request.getCookies();
+        return cookies;
     }
     
     /**

@@ -16,7 +16,7 @@ public class LoginAppRun implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         
-        System.out.println("··········程序启动············");
+        System.out.println("··········登录模块程序启动············");
 //        new Thread(() -> {
 //            try {
 //                
