@@ -2,7 +2,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: 951003zs
+    password: ENC(QsiUur6Y77CVRtlmi9AROUXsMAia4O2z)
     database: 5
     lettuce:
       pool:

@@ -11,7 +11,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<jwt.version>0.9.0</jwt.version>
 		<mybatis.version>3.2.0</mybatis.version>
 	</properties>
 

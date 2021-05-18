@@ -12,7 +12,6 @@ public class RedisCacheUtil {
     public static void set(String key,String value){
         RedisTemplate<String,String> redisTemplate = (RedisTemplate) SpringContextUtil.getBean("redisTemplate");
         redisTemplate.opsForValue().set(key,value);
-        System.out.println(redisTemplate.opsForValue().get("myKey"));
     }
     
     public static String get(String key) {
